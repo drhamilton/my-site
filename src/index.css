@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Helvetica Neue", Helvetica, "Noto Sans JP", Arial, sans-serif;
+  --color-exit: #f4c500;
+}
+
+/* Tiled station-wall background */
+.tiles {
+  background-color: #cdcbbd;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.09) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
