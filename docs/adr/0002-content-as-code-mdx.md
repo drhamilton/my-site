@@ -7,20 +7,20 @@ frontmatter at build time.
 
 ## Why
 
-For a handful of Projects, content-as-code is faster to write, diffs reviewably in
-git, and needs no running datastore. It keeps the "running server" decision
-(ADR-0001) justified by genuinely server-shaped features (contact form, view
-counts, future demos) rather than a self-built CMS we'd maintain for ~five posts.
+For a small, curated set of Projects, content-as-code is fast to author, diffs
+reviewably in git, and needs no running datastore. The server runtime (ADR-0001)
+is reserved for genuinely interactive features rather than serving content that
+ships just as well as files.
 
 ## Considered and rejected
 
-- **Headless CMS (Sanity/Contentful)** — nice integration to show off, but an
-  external account/dependency for very little content.
-- **Database + authed admin (Postgres/Prisma + `/admin`)** — maximal full-stack
-  showcase, but building a mini-CMS to store our own blog posts is the wrong place
-  to spend the "overengineer a bit" budget. A real Demo is a better showcase.
+- **Headless CMS (Sanity/Contentful)** — a nice integration, but an external
+  account and dependency for a small amount of content.
+- **Database + authed admin (Postgres/Prisma + `/admin`)** — a fuller full-stack
+  build, but maintaining a bespoke CMS for a handful of curated Projects isn't
+  worth the complexity; interactive Demos are a better use of that effort.
 
 ## Consequences
 
-- Adding/editing a Project means a commit + deploy, not a CMS edit. Acceptable for
-  a personal site.
+- Adding or editing a Project means a commit + deploy, not a CMS edit — fine for a
+  curated personal portfolio.

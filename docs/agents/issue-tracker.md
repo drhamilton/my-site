@@ -13,8 +13,6 @@ Issues and PRDs for this repo live as GitHub issues. Use the `gh` CLI for all op
 
 Infer the repo from `git remote -v` — `gh` does this automatically when run inside a clone.
 
-> **Note:** This repo has no GitHub remote configured yet. Add a remote and create the repo (e.g. `gh repo create`) before the `gh`-based skills will work.
-
 ## Pull requests as a triage surface
 
 **PRs as a request surface: no.** _(Set to `yes` if this repo treats external PRs as feature requests; `/triage` reads this flag.)_
