@@ -17,6 +17,9 @@ dist-ssr
 .agents/
 skills-lock.json
 
+# Personal scratch pad (local-only)
+NOTES.md
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
