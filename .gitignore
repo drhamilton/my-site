@@ -12,6 +12,11 @@ dist
 dist-ssr
 *.local
 
+# Agent tooling (local-only; not part of the site)
+.claude/
+.agents/
+skills-lock.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
