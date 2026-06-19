@@ -7,14 +7,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "vitest run"
   },
   "dependencies": {
     "@icons-pack/react-simple-icons": "^13.13.0",
+    "gray-matter": "^4.0.3",
     "lucide-react": "^1.20.0",
     "next": "^15.5.0",
     "react": "^19.2.6",
-    "react-dom": "^19.2.6"
+    "react-dom": "^19.2.6",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -27,6 +30,7 @@
     "globals": "^17.6.0",
     "tailwindcss": "^4.3.1",
     "typescript": "~6.0.2",
-    "typescript-eslint": "^8.59.2"
+    "typescript-eslint": "^8.59.2",
+    "vitest": "^4.1.9"
   }
 }
