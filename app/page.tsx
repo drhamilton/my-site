@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react'
+import Link from 'next/link'
 import { SiGithub } from '@icons-pack/react-simple-icons'
 import { Mail } from 'lucide-react'
 
@@ -39,10 +40,9 @@ function LineRoundel({
 }
 
 const directory = [
-  { code: '01', label: 'About', sub: 'Who I am' },
-  { code: '02', label: 'Projects', sub: 'Things I built' },
-  { code: '03', label: 'Writing', sub: 'Notes & essays' },
-  { code: '04', label: 'Résumé', sub: 'PDF' },
+  { code: '01', label: 'About', sub: 'Who I am', href: '/about' },
+  { code: '02', label: 'Projects', sub: 'Things I built', href: '/projects' },
+  { code: '03', label: 'Résumé', sub: 'Experience', href: '/resume' },
 ]
 
 const socials = [
@@ -87,15 +87,18 @@ export default function Home() {
           <p className="mt-2 font-bold text-black/70">Software Engineer</p>
 
           <ul className="mt-6 flex flex-col gap-3 text-black">
-            {directory.map(({ code, label, sub }) => (
+            {directory.map(({ code, label, sub, href }) => (
               <li key={code}>
-                <a href="#" className="flex items-center gap-3 hover:opacity-60">
+                <Link
+                  href={href}
+                  className="flex items-center gap-3 hover:opacity-60"
+                >
                   <Chip code={code} />
                   <span className="flex flex-col leading-tight">
                     <span className="font-bold">{label}</span>
                     <span className="text-xs text-black/60">{sub}</span>
                   </span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
