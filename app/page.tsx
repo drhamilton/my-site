@@ -69,7 +69,7 @@ const socials = [
   },
 ]
 
-function App() {
+export default function Home() {
   return (
     <main className="tiles flex min-h-screen items-center justify-center p-4 sm:p-8">
       <div className="grid w-full max-w-4xl gap-3 md:grid-cols-2">
@@ -133,5 +133,3 @@ function App() {
     </main>
   )
 }
-
-export default App

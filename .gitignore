@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Next.js
+.next
+next-env.d.ts
+
 # Agent tooling (local-only; not part of the site)
 .claude/
 .agents/
