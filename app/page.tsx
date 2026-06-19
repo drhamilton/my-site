@@ -87,15 +87,18 @@ export default function Home() {
           <p className="mt-2 font-bold text-black/70">Software Engineer</p>
 
           <ul className="mt-6 flex flex-col gap-3 text-black">
-            {directory.map(({ code, label, sub }) => (
+            {directory.map(({ code, label, sub, href }) => (
               <li key={code}>
-                <a href="#" className="flex items-center gap-3 hover:opacity-60">
+                <Link
+                  href={href}
+                  className="flex items-center gap-3 hover:opacity-60"
+                >
                   <Chip code={code} />
                   <span className="flex flex-col leading-tight">
                     <span className="font-bold">{label}</span>
                     <span className="text-xs text-black/60">{sub}</span>
                   </span>
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
