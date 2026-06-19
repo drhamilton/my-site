@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react'
+import Link from 'next/link'
 import { SiGithub } from '@icons-pack/react-simple-icons'
 import { Mail } from 'lucide-react'
 
@@ -39,10 +40,9 @@ function LineRoundel({
 }
 
 const directory = [
-  { code: '01', label: 'About', sub: 'Who I am' },
-  { code: '02', label: 'Projects', sub: 'Things I built' },
-  { code: '03', label: 'Writing', sub: 'Notes & essays' },
-  { code: '04', label: 'Résumé', sub: 'PDF' },
+  { code: '01', label: 'About', sub: 'Who I am', href: '/about' },
+  { code: '02', label: 'Projects', sub: 'Things I built', href: '/projects' },
+  { code: '03', label: 'Résumé', sub: 'Experience', href: '/resume' },
 ]
 
 const socials = [

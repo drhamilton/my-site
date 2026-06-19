@@ -1,7 +1,6 @@
 # my-site
 
-Personal portfolio site for Dillon Hamilton — built to showcase work in
-interviews. The centre of gravity is the **Projects** area: each Project appears
+Personal portfolio site for Dillon Hamilton — built to showcase work. The centre of gravity is the **Projects** area: each Project appears
 as a Card and may have an in-depth Walkthrough and/or a link to a running Demo.
 
 The site is itself a portfolio piece — a live, server-rendered Next.js
