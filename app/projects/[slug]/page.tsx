@@ -25,7 +25,16 @@ export async function generateMetadata({
   const { slug } = await params
   const project = getProjectBySlug(slug)
   if (!project) return {}
-  return { title: `${project.title} — Dillon Ruiz-Hamilton`, description: project.blurb }
+  return {
+    title: project.title,
+    description: project.blurb,
+    openGraph: {
+      type: 'article',
+      title: project.title,
+      description: project.blurb,
+      url: `/projects/${project.slug}`,
+    },
+  }
 }
 
 const eyebrow: CSSProperties = {
