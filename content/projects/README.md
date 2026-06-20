@@ -1,5 +1,10 @@
 # Projects content
 
+To author a Project from an existing codebase, run the **`project-from-repo`**
+skill (`docs/agents/skills/project-from-repo/`) — it interviews you, drafts a
+schema-correct `index.mdx`, and captures a Card thumbnail. The reference below is
+that schema.
+
 One **Project** per directory, each holding an `index.mdx`:
 
 ```
