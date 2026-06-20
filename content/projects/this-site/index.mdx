@@ -5,6 +5,7 @@ blurb: A server-rendered Next.js portfolio with content-as-code Projects.
 date: 2026-06-19
 type: frontend
 tags: [Next.js, TypeScript, Tailwind CSS, MDX]
+thumbnail: thumb.png
 repoUrl: https://github.com/drhamilton/my-site
 featured: true
 ---
@@ -22,6 +23,12 @@ file: the frontmatter is the **Card**, the body is the optional **Walkthrough**.
 A typed schema validates that frontmatter at build time, so broken content never
 ships. The pages are thin consumers of a single content-access module — the one
 unit-tested seam.
+
+![The Projects index, rendered as a Beacon card grid](./card-grid.png)
+
+Images are co-located too: a Project's thumbnail and screenshots live next to its
+MDX and are served through `next/image`, so they're resized, lazy-loaded, and
+delivered as AVIF/WebP without leaving the content directory.
 
 ## Result
 

@@ -6,7 +6,8 @@ One **Project** per directory, each holding an `index.mdx`:
 content/projects/
   my-cool-thing/
     index.mdx        ← frontmatter (Card) + optional body (Walkthrough)
-    screenshot.png   ← co-located images (wired up in #6)
+    thumb.png        ← co-located images, served via next/image
+    screenshot.png
 ```
 
 The frontmatter is validated at build time by `lib/projects.ts`; invalid or
@@ -21,11 +22,24 @@ incomplete frontmatter fails the build, so broken content never ships.
 | `blurb`     | yes      | string    | one-line Card summary                            |
 | `date`      | yes      | date      | `YYYY-MM-DD`; used for ordering                  |
 | `tags`      | no       | string[]  | tech/tags shown on the Card (default `[]`)       |
-| `thumbnail` | no       | string    | Card thumbnail image                             |
+| `thumbnail` | no       | string    | co-located image filename, e.g. `thumb.png`      |
 | `demoUrl`   | no       | url       | link to the running Demo                         |
 | `repoUrl`   | no       | url       | link to the source repo                          |
 | `embed`     | no       | boolean   | iframe the Demo into the Walkthrough (default `false`) |
 | `featured`  | no       | boolean   | pin to the top of the index (default `false`)    |
+
+## Images
+
+Drop a Project's images in its own directory and reference them by filename:
+
+- **Card** — `thumbnail: thumb.png` in the frontmatter.
+- **Walkthrough** — a standard relative Markdown image in the body,
+  `![alt](./shot.png)` (the leading `./` is optional; `![alt](shot.png)`
+  resolves the same).
+
+Both are served through `next/image` (resizing, lazy-load, AVIF/WebP, blur-up),
+so keep the committed sources sensibly compressed. An unresolved filename falls
+back to a plain placeholder.
 
 ## Card-only vs Walkthrough
 
