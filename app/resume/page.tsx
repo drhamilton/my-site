@@ -62,7 +62,7 @@ export default function ResumePage() {
               <a href={`mailto:${contact.email}`} className="inline-flex items-center gap-1.5 hover:opacity-60" style={mono}>
                 <Mail className="h-3.5 w-3.5" /> {contact.email}
               </a>
-              <a href={contact.linkedinUrl} className="inline-flex items-center gap-1.5 hover:opacity-60" style={mono}>
+              <a href={contact.linkedinUrl} target="_blank" rel="noreferrer noopener" className="inline-flex items-center gap-1.5 hover:opacity-60" style={mono}>
                 <ExternalLink className="h-3.5 w-3.5" /> {contact.linkedin}
               </a>
             </div>

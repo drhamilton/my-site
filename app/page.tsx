@@ -45,7 +45,11 @@ export default function Home() {
             Connect · Exit
           </p>
           <ul className="m-0 mt-auto flex list-none flex-col gap-0.5 p-0">
-            {socials.map(({ code, label, value, href }, i) => (
+            {socials.map(({ code, label, value, href }, i) => {
+              // External (http/https) links open in a new tab; the mailto link
+              // stays in place so the mail client takes over normally.
+              const external = href.startsWith('http')
+              return (
               <li
                 key={code}
                 style={{ borderBottom: i < socials.length - 1 ? '1px solid rgba(22,21,15,0.15)' : 'none' }}
@@ -53,6 +57,7 @@ export default function Home() {
                 <a
                   href={href}
                   aria-label={label}
+                  {...(external ? { target: '_blank', rel: 'noreferrer noopener' } : {})}
                   className="flex items-center gap-3.5 py-3 transition-opacity hover:opacity-70"
                   style={{ color: 'inherit', textDecoration: 'none' }}
                 >
@@ -72,7 +77,8 @@ export default function Home() {
                   <span style={codeMark}>{code}</span>
                 </a>
               </li>
-            ))}
+              )
+            })}
           </ul>
         </section>
       </div>
