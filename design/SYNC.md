@@ -14,6 +14,14 @@ Beacon design system the site is built on.
 
 These back the React components in `app/_components/` and the Projects pages.
 
+## Cards carry no real copy
+
+Design cards illustrate **components and layout only** — they never mirror the
+site's real copy (name, social handles, email, nav labels). Real copy lives in
+the site (`app/`); the cards use neutral placeholders (`First Last`,
+`github.com/handle`, `in/handle`, `you@example.com`, `Section` / `label`). This
+keeps copy changes from ever requiring a design re-sync.
+
 ## Not yet pulled (follow-up sync)
 
 To keep this pass within budget, these remote paths were **not** mirrored and can
@@ -26,6 +34,7 @@ be pulled in a dedicated sync:
 - DS scaffolding: `_ds_bundle.js`, `_ds_manifest.json`, `support.js`,
   `ds-base.js`, `Canvas.dc.html`, `_adherence.oxlintrc.json`, `readme.md`.
 
-The legacy flat cards (`chip.html`, `exit-sign.html`, `line-roundel.html`,
-`tokens.html`) predate Beacon and are superseded — `exit-sign.html` still shows
-the old home with the dropped **Writing** entry.
+The legacy flat cards (`chip.html`, `line-roundel.html`, `tokens.html`) predate
+Beacon and are superseded by the component/template cards above. `exit-sign.html`
+was removed in this pass — it was a full copy-replica of the home, now covered by
+`portfolio-home/PortfolioHome.dc.html`.

@@ -8,8 +8,8 @@ import { PixelAccent } from "../PixelAccent/PixelAccent.jsx";
  */
 export function NavTile({
   code = "01",
-  name = "About",
-  sub = "who I am",
+  name = "Section",
+  sub = "label",
   lit = false,
   dark = false,
   href,
