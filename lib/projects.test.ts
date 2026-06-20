@@ -21,8 +21,14 @@ describe('loadProjects', () => {
     expect(beta.tags).toEqual([])
     expect(beta.embed).toBe(false)
     expect(beta.featured).toBe(false)
+    expect(beta.type).toBe('frontend')
     expect(beta.demoUrl).toBeUndefined()
     expect(beta.thumbnail).toBeUndefined()
+  })
+
+  it('surfaces the Card type', () => {
+    expect(bySlug('gamma').type).toBe('server')
+    expect(bySlug('alpha').type).toBe('frontend')
   })
 
   it('orders featured first, then by date descending', () => {
@@ -92,6 +98,12 @@ describe('parseProject validation', () => {
   it('rejects a non-kebab-case slug', () => {
     expect(() => parseProject(valid.replace('slug: valid', 'slug: Not Valid'))).toThrow(
       /slug/,
+    )
+  })
+
+  it('rejects an unknown type', () => {
+    expect(() => parseProject(valid.replace('slug: valid', 'slug: valid\ntype: mobile'))).toThrow(
+      /type/,
     )
   })
 

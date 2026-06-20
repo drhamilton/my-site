@@ -1,15 +1,55 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap");
+
+/* ============================================================
+   my-site signage — "Beacon" design system (synced from Claude Design)
+   ============================================================ */
 
 @theme {
-  --font-sans: "Helvetica Neue", Helvetica, "Noto Sans JP", Arial, sans-serif;
-  --color-exit: #f4c500;
+  --color-sig-yellow: #f4c500;
+  --color-sig-ink: #16150f;
+  --color-sig-red: #d4202a;
+  --color-sig-blue: #143d8a;
+  --color-sig-field: #f6f4ec;
+  --color-sig-grid: #cdcbbd;
+
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-/* Tiled station-wall background */
-.tiles {
-  background-color: #cdcbbd;
+/* Plain CSS custom properties for the inline-styled components ported
+   verbatim from the Claude Design project (keeps them easy to re-sync). */
+:root {
+  --sig-yellow: #f4c500;
+  --sig-ink: #16150f;
+  --sig-red: #d4202a;
+  --sig-blue: #143d8a;
+  --sig-field: #f6f4ec;
+  --sig-grid: #cdcbbd;
+  --sig-alive: #f4c500;
+  --sig-fade: #6b5e16;
+  --sig-font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --sig-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+body {
+  font-family: var(--sig-font-display);
+  color: var(--sig-ink);
+}
+
+/* Signage tile/grid backgrounds (Beacon) */
+.sig-grid-bg {
+  background-color: #b4b2a4;
   background-image:
-    linear-gradient(rgba(0, 0, 0, 0.09) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 0, 0, 0.09) 1px, transparent 1px);
-  background-size: 30px 30px;
+    linear-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.07) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.sig-grid-bg--light {
+  background-color: #efece1;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
