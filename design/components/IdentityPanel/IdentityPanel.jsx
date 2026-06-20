@@ -7,7 +7,7 @@ import { CodeChip } from "../CodeChip/CodeChip.jsx";
  */
 export function IdentityPanel({
   eyebrow = "Portfolio · DH/SIG",
-  name = "Dillon\nHamilton",
+  name = "First\nLast",
   role = "Software Engineer",
   items = [
     { code: "01", label: "Projects" },
