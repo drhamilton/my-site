@@ -1,0 +1,66 @@
+---
+title: CI Failure Analyst
+slug: ci-failure-analyst
+blurb: An event-driven service that triages CI build failures — parse, fetch logs, analyze, notify — with at-least-once delivery.
+date: 2026-06-20
+type: server
+tags: [Java 21, Spring Boot, Google Cloud Datastore, Resilience4j, Docker]
+thumbnail: thumb.png
+featured: true
+---
+
+## Problem
+
+A failing CI build drops a wall of logs on whoever is on call, who then has to
+read it, guess at the root cause, and route it to the right person. The
+mechanical part of that — pull the failed job's logs, classify the failure, say
+what broke and where, and tell the right channel — is the same every time. I
+wanted to build that mechanical part as a proper backend service, and use it to
+work through the systems-design patterns it demands: pluggable inputs, an
+external call that can fail, durable storage, and a notification that must go out
+exactly once even when something downstream is down.
+
+## Approach
+
+The service is a Spring Boot (Java 21) application built around a **ports-and-adapters**
+core. A pure `core` module holds the domain — `BuildEvent`, `BuildLog`,
+`AnalysisResult`, and the interfaces `WebhookParser`, `BuildLogFetcher`,
+`FailureAnalyzer`, `Notifier`, `AnalysisResultStore` — with no framework
+dependencies. The `app` module supplies the Spring adapters that implement those
+ports. The seam keeps the orchestration testable in plain JUnit and lets any
+single piece be swapped without touching the rest.
+
+![The processing pipeline, stage by stage](./pipeline.png)
+
+A CI provider POSTs to `/webhook/{provider}` and the request flows through one
+pipeline:
+
+- **Multiple providers, by strategy.** The orchestrator injects every
+  `WebhookParser` and picks the first whose `supports(provider)` matches —
+  GitHub Actions and Buildkite today. Adding a provider is a new parser, not a
+  change to the flow.
+- **Resilient log fetch.** Pulling the failed job's logs from the GitHub API is
+  the one call that reaches outside the process, so it's wrapped with a
+  Resilience4j `@Retry`.
+- **Pluggable analysis.** The `FailureAnalyzer` port returns a category, a root
+  cause, and a summary. The analyzer is the swap-in seam — a deterministic stub
+  runs the whole pipeline locally with zero external calls, and an LLM-backed
+  adapter drops into the same port.
+- **Transactional outbox.** Saving a result writes the result row *and* a
+  `PENDING` outbox row in a single transaction; a scheduled relay drains the
+  outbox to the notifier, marking rows `SENT` and tracking attempts on failure.
+  The notification can never be lost or silently skipped if the notifier is
+  briefly down — it's at-least-once delivery decoupled from the request.
+
+Results persist to Google Cloud Datastore, and the whole thing ships as a
+multi-stage Docker image.
+
+## Result
+
+The outcome is a small, honest backend that demonstrates the patterns rather
+than just naming them: a framework-free domain core with adapters at the edges,
+a strategy-based extension point for providers, retries around the one
+fault-prone call, and a transactional outbox that makes delivery durable instead
+of best-effort. The orchestration and each adapter are covered by unit and
+integration tests, including the retry path and the Datastore store, so the
+seams are verified rather than assumed.
