@@ -1,7 +1,9 @@
 import type { CSSProperties } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { CodeChip } from './CodeChip'
 import { PixelAccent } from './PixelAccent'
+import { getProjectImage } from '@/lib/project-images'
 import type { Project } from '@/lib/projects'
 
 /**
@@ -20,8 +22,11 @@ const badgeStyle: CSSProperties = {
   whiteSpace: 'nowrap',
 }
 
+/** Demo-pane height, shared by the thumbnail and the striped placeholder. */
+const PANE_HEIGHT = 210
+
 const paneStyle: CSSProperties = {
-  height: 210,
+  height: PANE_HEIGHT,
   backgroundColor: '#d9d6c9',
   backgroundImage:
     'repeating-linear-gradient(135deg, rgba(22,21,15,0.07) 0 9px, transparent 9px 18px)',
@@ -71,6 +76,11 @@ const linkStyle: CSSProperties = {
 export function ProjectCard({ project, code }: { project: Project; code: string }) {
   const server = project.type === 'server'
   const walkthroughHref = project.hasWalkthrough ? `/projects/${project.slug}` : undefined
+  // A co-located thumbnail (frontmatter `thumbnail`) fills the demo pane via
+  // next/image; an unset or unresolved filename falls back to the striped pane.
+  const thumbnail = project.thumbnail
+    ? getProjectImage(project.slug, project.thumbnail)
+    : undefined
 
   const links: { label: string; href: string; external: boolean }[] = [
     project.demoUrl && { label: 'Live', href: project.demoUrl, external: true },
@@ -112,13 +122,17 @@ export function ProjectCard({ project, code }: { project: Project; code: string 
       </div>
 
       <div style={{ borderBottom: '2px solid #16150f' }}>
-        {project.thumbnail ? (
-          // next/image lands in #6; plain img is fine for the optional thumbnail until then
-          <img
-            src={project.thumbnail}
-            alt={`${project.title} thumbnail`}
-            style={{ display: 'block', width: '100%', height: 210, objectFit: 'cover' }}
-          />
+        {thumbnail ? (
+          <div style={{ position: 'relative', height: PANE_HEIGHT }}>
+            <Image
+              src={thumbnail}
+              alt={`${project.title} thumbnail`}
+              fill
+              sizes="(max-width: 768px) 100vw, 557px"
+              placeholder="blur"
+              style={{ objectFit: 'cover' }}
+            />
+          </div>
         ) : (
           <div style={paneStyle}>
             <span style={paneLabelStyle}>{server ? 'server · no UI' : 'demo'}</span>

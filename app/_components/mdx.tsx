@@ -1,4 +1,6 @@
 import type { ComponentPropsWithoutRef, CSSProperties } from 'react'
+import Image from 'next/image'
+import { getProjectImage } from '@/lib/project-images'
 
 /**
  * Styling for the MDX body of a Walkthrough. Maps Markdown elements to the
@@ -7,7 +9,47 @@ import type { ComponentPropsWithoutRef, CSSProperties } from 'react'
  */
 const heading: CSSProperties = { fontWeight: 700, letterSpacing: '-0.02em', color: '#16150f' }
 
-export const mdxComponents = {
+const imgFrame: CSSProperties = { border: '3px solid #16150f', margin: '24px 0' }
+
+/**
+ * A `![alt](./shot.png)` in a Walkthrough resolves against its Project's
+ * co-located images and renders through next/image (resize, lazy-load, modern
+ * formats, blur-up). An unresolved or remote `src` degrades to a plain `<img>`.
+ */
+function WalkthroughImage({
+  slug,
+  src,
+  alt,
+}: {
+  slug: string
+} & ComponentPropsWithoutRef<'img'>) {
+  const image = typeof src === 'string' ? getProjectImage(slug, src) : undefined
+  if (!image) {
+    return (
+      <img
+        src={src}
+        alt={alt ?? ''}
+        style={{ display: 'block', maxWidth: '100%', height: 'auto', ...imgFrame }}
+      />
+    )
+  }
+  return (
+    <Image
+      src={image}
+      alt={alt ?? ''}
+      sizes="(max-width: 820px) 100vw, 820px"
+      placeholder="blur"
+      style={{ display: 'block', width: '100%', height: 'auto', ...imgFrame }}
+    />
+  )
+}
+
+/**
+ * Build the MDX component map for one Project. It's a factory because the image
+ * mapper needs the Project's slug to resolve co-located screenshots.
+ */
+export function mdxComponents(slug: string) {
+  return {
   h2: (props: ComponentPropsWithoutRef<'h2'>) => (
     <h2 style={{ ...heading, fontSize: 28, margin: '40px 0 12px' }} {...props} />
   ),
@@ -27,14 +69,7 @@ export const mdxComponents = {
   a: (props: ComponentPropsWithoutRef<'a'>) => (
     <a style={{ color: '#143d8a', textDecoration: 'underline' }} {...props} />
   ),
-  // next/image lands in #6; plain img renders co-located screenshots until then
-  img: (props: ComponentPropsWithoutRef<'img'>) => (
-    <img
-      style={{ display: 'block', maxWidth: '100%', height: 'auto', border: '3px solid #16150f', margin: '24px 0' }}
-      alt=""
-      {...props}
-    />
-  ),
+  img: (props: ComponentPropsWithoutRef<'img'>) => <WalkthroughImage slug={slug} {...props} />,
   hr: () => <hr style={{ border: 0, borderTop: '2px solid rgba(22,21,15,0.2)', margin: '32px 0' }} />,
   blockquote: (props: ComponentPropsWithoutRef<'blockquote'>) => (
     <blockquote
@@ -54,4 +89,5 @@ export const mdxComponents = {
       {...props}
     />
   ),
+  }
 }

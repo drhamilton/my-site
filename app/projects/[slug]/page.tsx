@@ -114,7 +114,7 @@ export default async function WalkthroughPage({ params }: { params: Promise<Para
         )}
 
         <div className="mt-8">
-          <MDXRemote source={project.body} components={mdxComponents} />
+          <MDXRemote source={project.body} components={mdxComponents(project.slug)} />
         </div>
       </article>
     </main>
