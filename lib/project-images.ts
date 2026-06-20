@@ -13,7 +13,13 @@ import type { StaticImageData } from 'next/image'
  * Project directory.
  */
 
-/** Normalize a Project-relative reference (`./thumb.png`) into a registry key. */
+/**
+ * Normalize a Project-relative reference into a registry key, dropping a leading
+ * `./` or `/` so the frontmatter and MDX forms collapse onto the same key:
+ *
+ *   projectImageKey('this-site', 'thumb.png')      // 'this-site/thumb.png'
+ *   projectImageKey('this-site', './card-grid.png') // 'this-site/card-grid.png'
+ */
 export function projectImageKey(slug: string, file: string): string {
   return `${slug}/${file.replace(/^\.?\//, '')}`
 }

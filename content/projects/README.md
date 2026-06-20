@@ -30,11 +30,16 @@ incomplete frontmatter fails the build, so broken content never ships.
 
 ## Images
 
-Drop a Project's images in its own directory and reference them by filename —
-`thumbnail: thumb.png` in the frontmatter for the Card, and `![alt](./shot.png)`
-in the body for Walkthrough screenshots. Both are served through `next/image`
-(resizing, lazy-load, AVIF/WebP, blur-up), so keep the committed sources
-sensibly compressed. An unresolved filename falls back to a plain placeholder.
+Drop a Project's images in its own directory and reference them by filename:
+
+- **Card** — `thumbnail: thumb.png` in the frontmatter.
+- **Walkthrough** — a standard relative Markdown image in the body,
+  `![alt](./shot.png)` (the leading `./` is optional; `![alt](shot.png)`
+  resolves the same).
+
+Both are served through `next/image` (resizing, lazy-load, AVIF/WebP, blur-up),
+so keep the committed sources sensibly compressed. An unresolved filename falls
+back to a plain placeholder.
 
 ## Card-only vs Walkthrough
 

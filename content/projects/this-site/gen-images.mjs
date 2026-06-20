@@ -1,17 +1,22 @@
-// One-off generator for the co-located placeholder images shipped with the
-// `this-site` Project. Branded with the Beacon tokens (ink/paper/signal).
+// Regenerates this Project's placeholder images (thumb.png, card-grid.png),
+// branded with the Beacon tokens (ink/paper/signal). Run from anywhere:
+//   node content/projects/this-site/gen-images.mjs
+// Replace the output with real screenshots whenever they exist.
 import { writeFile } from 'node:fs/promises'
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
+
+const HERE = dirname(fileURLToPath(import.meta.url))
 
 const INK = '#16150f'
 const PAPER = '#f6f4ec'
 const SIGNAL = '#f4c500'
 const MUTE = '#d9d6c9'
 
-const mono =
-  'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace'
+const mono = 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace'
 
-function pixels(x, y, color, n = 5, cell = 11) {
+function pixels(x, y, color = INK, n = 5, cell = 11) {
   // A little 4-row pixel-accent cluster, Beacon-style.
   const rows = [0b1010, 0b0101, 0b1110, 0b0011]
   let r = ''
@@ -46,18 +51,12 @@ function svg({ code, title, sub }) {
 }
 
 const targets = [
-  {
-    file: 'content/projects/this-site/thumb.png',
-    spec: { code: 'P01', title: 'THIS SITE', sub: 'server-rendered portfolio' },
-  },
-  {
-    file: 'content/projects/this-site/card-grid.png',
-    spec: { code: 'FIG.1', title: 'CARD GRID', sub: 'the Projects index' },
-  },
+  { file: 'thumb.png', spec: { code: 'P01', title: 'THIS SITE', sub: 'server-rendered portfolio' } },
+  { file: 'card-grid.png', spec: { code: 'FIG.1', title: 'CARD GRID', sub: 'the Projects index' } },
 ]
 
 for (const { file, spec } of targets) {
   const png = await sharp(Buffer.from(svg(spec))).png({ compressionLevel: 9 }).toBuffer()
-  await writeFile(file, png)
+  await writeFile(join(HERE, file), png)
   console.log(`wrote ${file} (${png.length} bytes)`)
 }
