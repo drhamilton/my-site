@@ -1,0 +1,44 @@
+/* ============================================================
+   my-site signage — design system foundation
+   "Beacon" palette · Helvetica display + IBM Plex Mono labels
+   ============================================================ */
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap");
+
+:root {
+  /* ---- color · Beacon ---- */
+  --sig-yellow: #f4c500;   /* primary */
+  --sig-ink:    #16150f;   /* near-black */
+  --sig-red:    #d4202a;   /* coded accent */
+  --sig-blue:   #143d8a;   /* coded accent */
+  --sig-field:  #f6f4ec;   /* warm off-white surface */
+  --sig-grid:   #cdcbbd;   /* signage tile gray */
+
+  /* pixel-accent two-tone (Game-of-Life palette) */
+  --sig-alive:  #f4c500;
+  --sig-fade:   #6b5e16;
+
+  /* ---- type ---- */
+  --sig-font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --sig-font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* ---- radius / borders ---- */
+  --sig-radius: 3px;       /* chips, small marks */
+  --sig-rule: 3px;         /* heavy signage rule */
+
+  /* ---- spacing scale (4px base) ---- */
+  --sig-1: 4px;
+  --sig-2: 8px;
+  --sig-3: 12px;
+  --sig-4: 16px;
+  --sig-5: 24px;
+  --sig-6: 32px;
+  --sig-7: 48px;
+}
+
+/* eyebrow / label utility — mono, tracked, upper */
+.sig-eyebrow {
+  font-family: var(--sig-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
