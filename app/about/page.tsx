@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import { Placeholder } from '../_components/Placeholder'
 
 export const metadata: Metadata = {
-  title: 'About — Dillon Hamilton',
-  description: 'Who Dillon Hamilton is.',
+  title: 'About — Dillon Ruiz-Hamilton',
+  description: 'Who Dillon Ruiz-Hamilton is.',
 }
 
 export default function AboutPage() {

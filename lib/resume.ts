@@ -42,7 +42,7 @@ export const resume: Resume = {
   contact: {
     email: 'dillonrhamilton@gmail.com',
     linkedin: 'in/dillon-hamilton',
-    linkedinUrl: 'https://linkedin.com/in/dillon-hamilton',
+    linkedinUrl: 'https://www.linkedin.com/in/dillon-hamilton/',
   },
   pdf: '/Dillon-Ruiz-Hamilton-Resume.pdf',
   summary:

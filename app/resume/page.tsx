@@ -5,9 +5,9 @@ import { Download, Mail, ExternalLink } from 'lucide-react'
 import { resume } from '@/lib/resume'
 
 export const metadata: Metadata = {
-  title: 'Résumé — Dillon Hamilton',
+  title: 'Résumé — Dillon Ruiz-Hamilton',
   description:
-    'Résumé of Dillon Hamilton — full-stack software engineer with 13 years across healthtech, e-commerce, and platform engineering.',
+    'Résumé of Dillon Ruiz-Hamilton — full-stack software engineer with 13 years across healthtech, e-commerce, and platform engineering.',
 }
 
 const INK = '#16150f'
