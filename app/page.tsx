@@ -9,8 +9,8 @@ const directory = [
 ]
 
 const socials = [
-  { code: 'A1', label: 'GitHub', value: 'github.com/dillon', href: 'https://github.com/' },
-  { code: 'A2', label: 'LinkedIn', value: 'in/dillon-hamilton', href: 'https://linkedin.com/' },
+  { code: 'A1', label: 'GitHub', value: 'github.com/drhamilton', href: 'https://github.com/drhamilton' },
+  { code: 'A2', label: 'LinkedIn', value: 'in/dillon-hamilton', href: 'https://www.linkedin.com/in/dillon-hamilton/' },
   { code: 'B1', label: 'Email', value: 'dillonrhamilton@gmail.com', href: 'mailto:dillonrhamilton@gmail.com' },
 ]
 

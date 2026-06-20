@@ -19,7 +19,7 @@ const itemLinkStyle: CSSProperties = {
 
 export function IdentityPanel({
   eyebrow = 'Portfolio · DH/SIG',
-  name = 'Dillon\nHamilton',
+  name = 'Dillon\nRuiz-Hamilton',
   role = 'Software Engineer',
   items,
   footerLeft = 'Sections',

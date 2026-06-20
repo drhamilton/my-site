@@ -4,8 +4,8 @@ import { getProjects } from '@/lib/projects'
 import { ProjectCard } from '../_components/ProjectCard'
 
 export const metadata: Metadata = {
-  title: 'Projects — Dillon Hamilton',
-  description: 'Selected work by Dillon Hamilton — frontend builds and server systems.',
+  title: 'Projects — Dillon Ruiz-Hamilton',
+  description: 'Selected work by Dillon Ruiz-Hamilton — frontend builds and server systems.',
 }
 
 const eyebrow = {
