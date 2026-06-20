@@ -1,7 +1,11 @@
-// Regenerates this Project's placeholder images (thumb.png, card-grid.png),
-// branded with the Beacon tokens (ink/paper/signal). Run from anywhere:
+// Generates branded placeholder images (thumb.png, card-grid.png) using the
+// Beacon tokens (ink/paper/signal). Run from anywhere:
 //   node content/projects/this-site/gen-images.mjs
-// Replace the output with real screenshots whenever they exist.
+// NOTE: the committed thumb.png and card-grid.png are now real screenshots of
+// the live site (home signage panel + /projects card grid), captured via
+// docs/agents/skills/project-from-repo/capture-thumbnail.mjs. This script is
+// kept only as the fallback placeholder generator; running it will overwrite
+// those screenshots.
 import { writeFile } from 'node:fs/promises'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
