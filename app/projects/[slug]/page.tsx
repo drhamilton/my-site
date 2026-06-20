@@ -107,6 +107,10 @@ export default async function WalkthroughPage({ params }: { params: Promise<Para
               src={project.demoUrl}
               title={`${project.title} — live Demo`}
               loading="lazy"
+              // demoUrl is author-controlled, but sandbox the embed anyway so a
+              // demo page can't hijack top-navigation or leak the referrer.
+              sandbox="allow-scripts allow-same-origin allow-popups"
+              referrerPolicy="no-referrer"
               className="block w-full"
               style={{ height: 620, border: '3px solid #16150f', background: '#fff' }}
             />
