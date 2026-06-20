@@ -10,10 +10,8 @@ export function IdentityPanel({
   name = "Dillon\nHamilton",
   role = "Software Engineer",
   items = [
-    { code: "01", label: "About" },
-    { code: "02", label: "Projects" },
-    { code: "03", label: "Writing" },
-    { code: "04", label: "Résumé" },
+    { code: "01", label: "Projects" },
+    { code: "02", label: "Résumé" },
   ],
   footerLeft = "Sections",
   style,

@@ -3,9 +3,8 @@ import { IdentityPanel } from './_components/IdentityPanel'
 import { PixelAccent } from './_components/PixelAccent'
 
 const directory = [
-  { code: '01', label: 'About', href: '/about' },
-  { code: '02', label: 'Projects', href: '/projects' },
-  { code: '03', label: 'Résumé', href: '/resume' },
+  { code: '01', label: 'Projects', href: '/projects' },
+  { code: '02', label: 'Résumé', href: '/resume' },
 ]
 
 const socials = [
