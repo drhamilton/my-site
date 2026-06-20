@@ -19,6 +19,8 @@ const frontmatterSchema = z.object({
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'must be kebab-case'),
   blurb: z.string().min(1),
   date: z.coerce.date(),
+  /** Drives the Card variant: a frontend Project shows a demo pane, a server Project a terminal/no-UI pane. */
+  type: z.enum(['frontend', 'server']).default('frontend'),
   tags: z.array(z.string()).default([]),
   thumbnail: z.string().optional(),
   demoUrl: z.url().optional(),
