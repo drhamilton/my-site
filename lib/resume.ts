@@ -76,7 +76,7 @@ export const resume: Resume = {
     },
     {
       label: 'Cloud & Infrastructure',
-      items: 'Azure (primary), AWS (S3, Lambda — in progress)',
+      items: 'AWS, GCP, Azure',
     },
   ],
   experience: [
