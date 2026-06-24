@@ -5,7 +5,7 @@ import { ProjectCard } from '../_components/ProjectCard'
 
 export const metadata: Metadata = {
   title: 'Projects',
-  description: 'Selected work by Dillon Ruiz-Hamilton — frontend builds and server systems.',
+  description: 'Selected work by Dillon Ruiz-Hamilton — apps and backend services.',
 }
 
 const eyebrow = {
@@ -58,7 +58,7 @@ export default function ProjectsPage() {
             <code>content/projects/&lt;slug&gt;/index.mdx</code>.
           </p>
         ) : (
-          <div className="mt-10 grid grid-cols-1 items-start gap-[26px] md:grid-cols-2">
+          <div className="mt-10 grid grid-cols-1 auto-rows-fr gap-[26px] md:grid-cols-2">
             {projects.map((project, i) => (
               <ProjectCard
                 key={project.slug}
