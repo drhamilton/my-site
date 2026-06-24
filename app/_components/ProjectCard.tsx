@@ -116,7 +116,7 @@ export function ProjectCard({ project, code }: { project: Project; code: string 
             color: server ? '#f4c500' : '#16150f',
           }}
         >
-          {server ? 'Server · No UI' : 'Frontend'}
+          {server ? 'Service' : 'App'}
         </span>
         <PixelAccent size={26} mode="solid" color="#16150f" glow={0} style={{ marginLeft: 'auto' }} />
       </div>
@@ -135,7 +135,7 @@ export function ProjectCard({ project, code }: { project: Project; code: string 
           </div>
         ) : (
           <div style={paneStyle}>
-            <span style={paneLabelStyle}>{server ? 'server · no UI' : 'demo'}</span>
+            <span style={paneLabelStyle}>{server ? 'service · no UI' : 'demo'}</span>
           </div>
         )}
       </div>
@@ -165,7 +165,7 @@ export function ProjectCard({ project, code }: { project: Project; code: string 
             style={{
               display: 'flex',
               gap: 16,
-              margin: '18px 0 0',
+              marginTop: 'auto',
               paddingTop: 14,
               borderTop: '1px solid rgba(22,21,15,0.15)',
             }}
