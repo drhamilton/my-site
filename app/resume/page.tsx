@@ -46,7 +46,7 @@ export default function ResumePage() {
     <main className="sig-grid-bg--light min-h-screen">
       <div className="mx-auto max-w-[860px] px-6 py-14 sm:px-8">
         <Link href="/" style={eyebrow} className="inline-block hover:opacity-60">
-          ← DH/SIG · 03 — Résumé
+          ← DH/SIG · 02 — Résumé
         </Link>
 
         {/* Identity + download CTA */}
