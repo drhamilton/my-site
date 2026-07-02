@@ -30,7 +30,7 @@ export default function ProjectsPage() {
               style={eyebrow}
               className="inline-block hover:opacity-60"
             >
-              ← DH/SIG · 02 — Projects
+              ← DH/SIG · 01 — Projects
             </Link>
             <h1 className="m-0 text-[44px] font-bold tracking-[-0.03em] sm:text-[52px]" style={{ lineHeight: 0.9 }}>
               Selected Work
