@@ -1,7 +1,7 @@
 ---
 title: CI Failure Analyst
 slug: ci-failure-analyst
-blurb: An event-driven service that triages CI build failures — parse, fetch logs, analyze, notify — with at-least-once delivery, deployed on AWS Fargate via Terraform.
+blurb: Failed build in, root cause out. Parses the webhook, fetches the logs, classifies the failure, notifies the channel. Delivery guaranteed at least once.
 date: 2026-06-30
 type: server
 tags: [Java 21, Spring Boot, AWS ECS Fargate, Terraform, DynamoDB, Datastore]
@@ -12,74 +12,61 @@ featured: true
 
 ## Problem
 
-A failing CI build drops a wall of logs on whoever is on call, who then has to
-read it, guess at the root cause, and route it to the right person. The
-mechanical part of that — pull the failed job's logs, classify the failure, say
-what broke and where, and tell the right channel — is the same every time. I
-wanted to build that mechanical part as a proper backend service, and use it to
-work through the systems-design patterns it demands: pluggable inputs, an
-external call that can fail, durable storage, and a notification that must go out
-exactly once even when something downstream is down.
+CI fails. Someone on call opens a 4,000-line log and guesses. The guessing is
+mechanical: pull the failed job's logs, classify the failure, say what broke,
+tell the right channel. Same steps, every time.
+
+So I built that part as a real backend service. It was also a good excuse to
+work through the patterns this kind of service forces on you: pluggable inputs,
+an external call that can fail, durable storage, a notification that can't get
+lost.
 
 ## Approach
 
-The service is a Spring Boot (Java 21) application built around a **ports-and-adapters**
-core. A pure `core` module holds the domain — `BuildEvent`, `BuildLog`,
-`AnalysisResult`, and the interfaces `WebhookParser`, `BuildLogFetcher`,
-`FailureAnalyzer`, `Notifier`, `AnalysisResultStore` — with no framework
-dependencies. The `app` module supplies the Spring adapters that implement those
-ports. The seam keeps the orchestration testable in plain JUnit and lets any
-single piece be swapped without touching the rest.
+Spring Boot, Java 21, **ports and adapters**. A pure `core` module holds the
+domain — `BuildEvent`, `BuildLog`, `AnalysisResult` — and five ports:
+`WebhookParser`, `BuildLogFetcher`, `FailureAnalyzer`, `Notifier`,
+`AnalysisResultStore`. No framework in the core. The `app` module supplies the
+Spring adapters. The orchestration is testable in plain JUnit; every piece swaps
+independently.
 
 ![The processing pipeline, stage by stage](./pipeline.png)
 
-A CI provider POSTs to `/webhook/{provider}` and the request flows through one
-pipeline:
+A CI provider POSTs to `/webhook/{provider}`. One pipeline handles it:
 
-- **Multiple providers, by strategy.** The orchestrator injects every
-  `WebhookParser` and picks the first whose `supports(provider)` matches —
-  GitHub Actions and Buildkite today. Adding a provider is a new parser, not a
-  change to the flow.
-- **Resilient log fetch.** Pulling the failed job's logs from the GitHub API is
-  the one call that reaches outside the process, so it's wrapped with a
-  Resilience4j `@Retry`.
-- **Pluggable analysis.** The `FailureAnalyzer` port returns a category, a root
-  cause, and a summary. The analyzer is the swap-in seam — a deterministic stub
-  runs the whole pipeline locally with zero external calls, and an LLM-backed
-  adapter drops into the same port.
-- **Transactional outbox.** Saving a result writes the result row *and* a
-  `PENDING` outbox row in a single transaction; a scheduled relay drains the
-  outbox to the notifier, marking rows `SENT` and tracking attempts on failure.
-  The notification can never be lost or silently skipped if the notifier is
-  briefly down — it's at-least-once delivery decoupled from the request.
-- **Two storage backends, one port.** The `AnalysisResultStore` seam is proven,
-  not just claimed: a Google Cloud Datastore adapter and a DynamoDB adapter both
-  implement it, and the active one is chosen by Spring profile. The Datastore
-  adapter does the transactional outbox write; the DynamoDB adapter is the lean
-  path used by the AWS deployment.
-- **Verified, authenticated edges.** GitHub webhooks are checked with a
-  constant-time HMAC-SHA256 signature comparison before anything is processed,
-  and the `/results` read API sits behind stateless Spring Security basic auth
-  whose password is mandatory — the app refuses to start with a guessable one.
+- **Providers by strategy.** The orchestrator asks each `WebhookParser`
+  `supports(provider)` and takes the first yes. GitHub Actions and Buildkite
+  today. A new provider is a new parser; the flow doesn't change.
+- **Log fetch, retried.** The GitHub API call is the only one that leaves the
+  process. Resilience4j `@Retry` wraps it.
+- **Analysis behind a port.** `FailureAnalyzer` returns a category, a root
+  cause, a summary. A deterministic stub runs the whole pipeline locally with
+  zero external calls; an LLM-backed adapter drops into the same port.
+- **Transactional outbox.** One transaction writes the result row and a
+  `PENDING` outbox row. A scheduled relay drains the outbox, marks rows `SENT`,
+  counts attempts. Notifier down? The notification waits — it doesn't vanish.
+  At-least-once delivery, decoupled from the request.
+- **Two stores, one port.** `AnalysisResultStore` has a Google Cloud Datastore
+  adapter and a DynamoDB adapter; a Spring profile picks one. Datastore does the
+  outbox write. DynamoDB is the lean path the AWS deployment uses.
+- **Authenticated edges.** GitHub webhooks get a constant-time HMAC-SHA256
+  check before anything runs. `/results` sits behind stateless basic auth with a
+  mandatory password — the app refuses to start with a guessable one.
 
-The whole thing ships as a multi-stage Docker image and runs on AWS. The
-infrastructure is Terraform, split into two stacks: a durable `base` (ECR,
-DynamoDB, SSM secrets, and a cost budget with a hard deny action) that stays up
-at roughly zero idle cost, and an ephemeral `ecs` stack — IAM roles, a Fargate
-task definition, and a service — brought up and torn down per session so metered
-compute only runs when it's wanted. The container carries no static keys: a
-dedicated task role grants the running app scoped DynamoDB access, while a
-separate execution role pulls the image and decrypts secrets at launch.
+Ships as a multi-stage Docker image. Runs on AWS. The Terraform is two stacks: a
+durable `base` (ECR, DynamoDB, SSM secrets, and a cost budget with a hard deny
+action) at near-zero idle cost, and an ephemeral `ecs` stack — IAM roles,
+Fargate task definition, service — brought up and torn down per session, so
+compute only bills while it's up. No static keys in the container: the task role
+grants scoped DynamoDB access, and a separate execution role pulls the image and
+decrypts secrets at launch.
 
 ## Result
 
-The outcome is a small, honest backend that demonstrates the patterns rather
-than just naming them: a framework-free domain core with adapters at the edges,
-a strategy-based extension point for providers, retries around the one
-fault-prone call, and a transactional outbox that makes delivery durable instead
-of best-effort. The store port is exercised by two real adapters across two
-clouds, the webhook and read API are authenticated, and the service deploys to
-AWS Fargate from Terraform with least-privilege IAM and a cost guardrail. The
-orchestration and each adapter are covered by unit and integration tests,
-including the retry path, signature verification, and both stores, so the seams
-are verified rather than assumed.
+A small backend where every pattern is load-bearing: a framework-free core, a
+strategy seam for providers, a retry around the one fault-prone call, an outbox
+that makes delivery durable instead of best-effort. The store port is exercised
+by two real adapters on two clouds. Both edges are authenticated. It deploys to
+Fargate from Terraform with least-privilege IAM and a cost guardrail. Unit and
+integration tests cover the orchestration, the retry path, signature
+verification, and both stores.
